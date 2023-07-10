@@ -1,0 +1,29 @@
+# Chapter 12
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: parallelz
+  labels:
+    chapter: jobs
+
+spec:
+  parallelism: 5
+  completions: 10
+  template:
+    metadata:
+      labels:
+        chapter: jobs
+
+    spec:
+      containers:
+        - name: kuard
+          image: gcr.io/kuar-demo/kuard-amd64:blue
+          imagePullPolicy: Always
+          command:
+            - "/kuard" # il faut absolument le - à la con car command est un tableau
+          args:
+            - "--keygen-enable"
+            - "--keygen-exit-on-complete"
+            - "--keygen-num-to-gen=2"
+      restartPolicy: OnFailure

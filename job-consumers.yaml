@@ -1,0 +1,32 @@
+# chapitre 12
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: message-queue
+    component: consumer
+    chapter: jobs
+  name: consumers
+
+spec:
+  parallelism: 5
+  template:
+    metadata:
+      labels:
+        app: message-queue
+        component: consumer
+        chapter: jobs
+    spec:
+      containers:
+        - name: worker
+          image: gcr.io/kuar-demo/kuard-arm64:blue
+          imagePullPolicy: IfNotPresent #i do what i want
+          command:
+            - "/kuard"
+          args:
+            - "--keygen-enable"
+            - "--keygen-exit-on-complete"
+            - "--keygen-memq-server=http://queue:8099/memq/server" #queue = name of service, 8099: the service outside port
+            - "--keygen-memq-queue=keygen"
+      restartPolicy: OnFailure

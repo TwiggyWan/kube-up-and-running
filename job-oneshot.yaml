@@ -1,0 +1,21 @@
+# Chapter 12
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: oneshot
+
+spec:
+  template:
+    spec:
+      containers:
+        - name: kuard
+          image: gcr.io/kuar-demo/kuard-amd64:blue
+          imagePullPolicy: Always
+          command:
+            - "/kuard" # il faut absolument le - à la con car command est un tableau
+          args:
+            - "--keygen-enable"
+            - "--keygen-exit-on-complete"
+            - "--keygen-num-to-gen=10"
+      restartPolicy: OnFailure

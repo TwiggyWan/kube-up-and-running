@@ -1,0 +1,12 @@
+# Chapter 7 page 87 Connecting to resources outside a cluster
+
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: my-super-server
+
+subsets:
+  - addresses:
+      - ip: 1.2.3.4
+    ports:
+      - port: 9292

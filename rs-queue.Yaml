@@ -1,0 +1,28 @@
+# chapter 12
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  labels:
+    app: work-queue
+    component: queue
+    chapter: jobs
+  name: queue
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: work-queue
+      component: queue
+      #chapter: jobs #je commente parce qu'on devrait matcher correctement avec 2 labels, voire un seul
+  template:
+    metadata:
+      labels:
+        app: work-queue
+        component: queue
+        chapter: jobs
+    spec:
+      containers:
+        - name: queue
+          image: gcr.io/kuar-demo/kuard-amd64:blue
+          # imagePullPolicy: Always # https://kubernetes.io/docs/concepts/containers/images/#imagepullpolicy-defaulting

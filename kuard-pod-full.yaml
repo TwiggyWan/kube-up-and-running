@@ -1,0 +1,45 @@
+#Chapter 5 putting it all together
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kuard-full
+spec:
+  volumes:
+    - name: "kuard-data"
+      hostPath:
+        path: "/var/lib/kuard"
+  containers:
+    - image: gcr.io/kuar-demo/kuard-arm64:blue
+      name: kuard
+
+      livenessProbe:
+        httpGet:
+          path: /healthy
+          port: lenomquejeveux
+        initialDelaySeconds: 5
+        timeoutSeconds: 1
+        periodSeconds: 10
+        failureThreshold: 3
+
+      readinessProbe:
+        httpGet:
+          path: /ready
+          port: lenomquejeveux
+        initialDelaySeconds: 30
+        timeoutSeconds: 1
+        periodSeconds: 10
+        failureThreshold: 3
+
+      ports:
+        # kubectl port-forward kuard:80:8080
+        - containerPort: 8080
+          name: lenomquejeveux
+          protocol: TCP
+
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "128M" #i dont like Mi
+        limits:
+          cpu: "1"
+          memory: "256M"
